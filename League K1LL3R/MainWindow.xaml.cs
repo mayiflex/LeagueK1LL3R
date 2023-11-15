@@ -29,7 +29,7 @@ namespace LeagueK1LL3R {
 
         private static readonly string saveFolder = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LeagueK1LL3R");
         private static readonly string savePath = System.IO.Path.Combine(saveFolder, "killedCounter.txt");
-        private static readonly string autoStart = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Microsoft\\Windows\\Start Menu\\Programs\\Startup", System.AppDomain.CurrentDomain.FriendlyName);
+        private static readonly string autoStart = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Microsoft\\Windows\\Start Menu\\Programs\\Startup", System.AppDomain.CurrentDomain.FriendlyName + ".exe");
         public static int killedCounter { get; set; } = 0;
         public static NotifyIcon notifyIcon { get; set; } = new NotifyIcon();
         public MainWindow() {
@@ -100,8 +100,7 @@ namespace LeagueK1LL3R {
                     }
                     if (presses > 1) {
                         foreach (var process in Process.GetProcessesByName("League of Legends")) {
-                            var foo = GetForegroundWindow();
-                            if (foo != process.MainWindowHandle) continue;
+                            if (GetForegroundWindow() != process.MainWindowHandle) continue;
                             process.Kill();
                             killedCounter++;
                             File.WriteAllText(savePath, killedCounter.ToString());
